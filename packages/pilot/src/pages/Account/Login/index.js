@@ -8,7 +8,7 @@ import { compose } from 'ramda'
 import { connect } from 'react-redux'
 
 import Login from '../../../containers/Account/Login'
-import { requestLogin } from '../actions'
+import { requestLogin, resetState } from '../actions'
 
 import buildParamErrors from './buildParamErrors'
 
@@ -34,6 +34,9 @@ const mapDispatchToProps = dispatch => ({
   onLogin: (data) => {
     dispatch(requestLogin({ ...data, environment }))
   },
+  resetState: () => {
+    dispatch(resetState())
+  },
 })
 
 const enhanced = compose(
@@ -46,6 +49,10 @@ const enhanced = compose(
 )
 
 class LoginPage extends PureComponent {
+  componentWillUnmount () {
+    this.props.resetState()
+  }
+
   // eslint-disable-next-line class-methods-use-this
   handlePasswordRecovery (e) {
     e.preventDefault()
@@ -53,23 +60,31 @@ class LoginPage extends PureComponent {
   }
 
   render () {
+    const {
+      error,
+      loading,
+      onLogin,
+      t,
+    } = this.props
+
     return (
       <Login
-        t={this.props.t}
-        errors={buildParamErrors(this.props.error)}
-        loading={this.props.loading}
-        onLogin={this.props.onLogin}
+        errors={buildParamErrors(error)}
+        loading={loading}
+        onLogin={onLogin}
         onPasswordRecovery={this.handlePasswordRecovery}
+        t={t}
       />
     )
   }
 }
 
 LoginPage.propTypes = {
-  t: PropTypes.func.isRequired,
   error: PropTypes.instanceOf(Error),
   loading: PropTypes.bool,
   onLogin: PropTypes.func.isRequired,
+  resetState: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
 }
 
 LoginPage.defaultProps = {

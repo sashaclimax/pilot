@@ -19,7 +19,7 @@ class RegisteredPresentationPage extends PureComponent {
   // eslint-disable-next-line class-methods-use-this
   handleSignup (e) {
     e.preventDefault()
-    window.location = 'https://dashboard.pagar.me/#/signup'
+    this.props.history.push('/account/signup')
   }
 
   render () {
@@ -33,6 +33,9 @@ class RegisteredPresentationPage extends PureComponent {
 }
 
 RegisteredPresentationPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   t: PropTypes.func.isRequired,
 }
 

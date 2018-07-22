@@ -14,10 +14,15 @@ const enhanced = compose(
 )
 
 class UnregisteredPresentationPage extends PureComponent {
+  constructor () {
+    super()
+    this.handleLogin = this.handleLogin.bind(this)
+  }
+
   // eslint-disable-next-line class-methods-use-this
   handleLogin (e) {
     e.preventDefault()
-    window.location = 'https://dashboard.pagar.me/#/signup'
+    this.props.history.push('/account/login')
   }
 
   render () {
@@ -31,6 +36,9 @@ class UnregisteredPresentationPage extends PureComponent {
 }
 
 UnregisteredPresentationPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   t: PropTypes.func.isRequired,
 }
 
