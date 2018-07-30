@@ -16,7 +16,6 @@ class RegisteredPresentationPage extends PureComponent {
     this.handleSignup = this.handleSignup.bind(this)
   }
 
-  // eslint-disable-next-line class-methods-use-this
   handleSignup (e) {
     e.preventDefault()
     this.props.history.push('/account/signup')

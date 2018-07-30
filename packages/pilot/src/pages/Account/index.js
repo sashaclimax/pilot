@@ -7,13 +7,7 @@ import {
   withRouter,
 } from 'react-router-dom'
 
-import {
-  compose,
-  always,
-  anyPass,
-  contains,
-  ifElse,
-} from 'ramda'
+import { compose } from 'ramda'
 
 import { translate } from 'react-i18next'
 
@@ -29,25 +23,16 @@ import RegisteredPresentation from './RegisteredPresentation'
 
 import Logo from '../logo.svg'
 
-const getBaseByPath = ifElse(
-  anyPass([
-    contains('account/login'),
-    contains('account/password'),
-  ]),
-  always('dark'),
-  always('light')
-)
-
 const enhance = compose(
   withRouter,
   translate()
 )
 
-const AccountArea = ({ t, history: { location } }) => (
+const AccountArea = ({ t }) => (
   <Account
     t={t}
     logo={Logo}
-    base={getBaseByPath(location.pathname)}
+    base="dark"
     primaryContent={
       <Switch>
         <Route
@@ -98,11 +83,6 @@ const AccountArea = ({ t, history: { location } }) => (
 
 AccountArea.propTypes = {
   t: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }),
-  }).isRequired,
 }
 
 export default enhance(AccountArea)

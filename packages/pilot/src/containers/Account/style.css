@@ -127,7 +127,8 @@
   }
 }
 
-.primaryContent .login {
+.primaryContent .login,
+.primaryContent .signIn, {
 
   & input:focus ~ label,
   & input:hover,
@@ -182,4 +183,3 @@
     box-sizing: border-box;
   }
 }
-
