@@ -2,6 +2,8 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import AnticipationForm from './Anticipation/Form'
+import AddAccount from './AddRecipient/BankAccountStep/AddAccount'
+import BankAccountStep from './AddRecipient/BankAccountStep'
 import BoletoForm from './Refund/BoletoForm'
 import BoletoRefundConfirm from './Refund/BoletoConfirmation'
 import BoletoRefundResult from './Refund/BoletoResult'
@@ -33,6 +35,7 @@ import {
 import Reprocess from './Reprocess'
 import ReprocessForm from './Reprocess/Form'
 import ReprocessResult from './Reprocess/Result'
+import SelectAccount from './AddRecipient/BankAccountStep/SelectAccount'
 import Withdraw from './Withdraw'
 import WithdrawConfirmation from './Withdraw/Confirmation'
 import WithdrawForm from './Withdraw/Form'
@@ -54,6 +57,12 @@ import Anticipation from './Anticipation'
 storiesOf('Containers', module)
   .add('Anticipation Form', () => (
     <AnticipationForm />
+  ))
+  .add('Add Account', () => (
+    <AddAccount />
+  ))
+  .add('Bank Account Step', () => (
+    <BankAccountStep />
   ))
   .add('Recipient list', () => (
     <RecipientListState />
@@ -147,6 +156,9 @@ storiesOf('Containers', module)
         result: 'error',
       }}
     />
+  ))
+  .add('Select Account', () => (
+    <SelectAccount />
   ))
   .add('Withdraw', () => (
     <Withdraw />
