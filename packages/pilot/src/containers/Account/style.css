@@ -125,22 +125,21 @@
   & > *:not(:first-child) {
     padding-top: 48px;
   }
-}
 
-.primaryContent .login,
-.primaryContent .signIn, {
-
-  & input:focus ~ label,
-  & input:hover,
-  & input:focus,
-  & input {
+  & .input input:focus ~ label,
+  & .input input {
     color: #ffffff;
     caret-color: #ffffff;
   }
 
-  & input ~ button {
+  & .input input ~ button {
     color: #ffffff;
   }
+}
+
+.input input {
+  color: #ffffff;
+  caret-color: #ffffff;
 }
 
 .signInBlock {

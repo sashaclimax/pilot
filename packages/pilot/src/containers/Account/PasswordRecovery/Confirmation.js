@@ -21,7 +21,7 @@ const Confirmation = ({
       <div className={styles.hugeButton} >
         <Button
           type="button"
-          size="large"
+          size="huge"
           fill="gradient"
           onClick={onBackToLogin}
         >

@@ -29,11 +29,14 @@ const LoginContainer = ({
   >
     <div className={styles.login}>
       <FormInput
+        className={styles.input}
         disabled={loading}
         label={t('email')}
         name="email"
+        type="email"
       />
       <FormInput
+        className={styles.input}
         disabled={loading}
         type="password"
         label={t('password')}
