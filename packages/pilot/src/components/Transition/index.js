@@ -139,9 +139,9 @@ Transition.propTypes = {
   atActive: PropTypes.object.isRequired,
   atEnter: PropTypes.object.isRequired,
   atLeave: PropTypes.object.isRequired,
+  /* eslint-enable react/forbid-prop-types */
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
-  /* eslint-enable react/forbid-prop-types */
   didLeave: PropTypes.func,
   mapStyles: PropTypes.func,
   runOnMount: PropTypes.bool,

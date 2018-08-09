@@ -27,6 +27,7 @@ import BalanceSummary from './BalanceSummary'
 import SidebarSections from './SidebarSections'
 import SidebarSummary from './SidebarSummary'
 import Loader from './Loader'
+import LocalLoader from './LocalLoader'
 
 storiesOf('Components', module)
   .add('Copy button', () => (
@@ -107,4 +108,6 @@ storiesOf('Components', module)
   .add('Loader', () => (
     <Loader />
   ))
-
+  .add('Local loader', () => (
+    <LocalLoader />
+  ))
