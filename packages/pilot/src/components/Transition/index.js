@@ -7,6 +7,7 @@ import {
   identity,
   ifElse,
   is,
+  map,
   mapObjIndexed,
   uncurryN,
 } from 'ramda'
@@ -57,14 +58,29 @@ class Transition extends Component {
   }
 
   getStyles () {
+    const { children } = this.props
     if (!this.props.children) {
       return []
+    }
+
+    if (is(Array, children)) {
+      return map(child => ({
+        data: child,
+        key: child.key,
+        style: ensureSpring(this.props.springOptions, this.props.atActive),
+      }), children)
+    }
+
+    const { key } = children
+    if (!key) {
+      // eslint-disable-next-line no-console
+      console.warn('Transition child must have a key')
     }
 
     return [
       {
         data: this.props.children,
-        key: this.props.children.key,
+        key,
         style: ensureSpring(this.props.springOptions, this.props.atActive),
       },
     ]
@@ -89,7 +105,9 @@ class Transition extends Component {
       key: config.key,
       style: this.props.mapStyles(config.style),
     }
-
+    if (is(Array, config.data)) {
+      return map(element => cloneElement(element, props), config.data)
+    }
     return cloneElement(config.data, props)
   }
 
