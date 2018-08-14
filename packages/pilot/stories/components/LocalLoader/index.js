@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react'
 import {
   Button,
+  Card,
   Col,
   Grid,
   Row,
 } from 'former-kit'
-import { action } from '@storybook/addon-actions'
-import BalanceTotalDisplay from '../../../src/components/BalanceTotalDisplay'
 import Loader from '../../../src/components/LocalLoader'
 import Section from '../../Section'
+import style from './style.css'
 
 class LoaderState extends PureComponent {
   constructor () {
@@ -45,22 +45,15 @@ class LoaderState extends PureComponent {
             </Col>
 
             <Col palm={12} tablet={6} desk={4} tv={4}>
-              <div style={{ position: 'relative' }} >
-                <BalanceTotalDisplay
-                  title="A Receber"
-                  amount="R$ 7.000,00"
-                  detail={<span>Liberado para saque: <strong>R$5.000,00</strong></span>}
-                  action={{
-                    title: 'Antecipar',
-                    onClick: action('clicked'),
-                  }}
-                />
+              <Card className={style.cardExample}>
+                <h1> Example </h1>
+                <h4> 300px X 200px </h4>
                 <Loader
                   label="Loading"
-                  text="Loading..."
+                  text="Loading"
                   visible={this.state.showingLoader}
                 />
-              </div>
+              </Card>
             </Col>
           </Row>
         </Grid>
