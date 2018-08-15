@@ -19,8 +19,7 @@ const MessageAlertExample = () => (
   >
     <MessageAlertActions>
       <Button
-        fill="gradient"
-        relevance="high"
+        fill="outline"
       >
         Sair
       </Button>

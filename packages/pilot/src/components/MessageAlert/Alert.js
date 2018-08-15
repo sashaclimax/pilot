@@ -7,6 +7,8 @@ import {
   Row,
 } from 'former-kit'
 
+import style from './style.css'
+
 const MessageAlert = ({
   children,
   icon,
@@ -34,17 +36,21 @@ const MessageAlert = ({
     <Row flex>
       <Col
         align="center"
-        aria-live="polite"
-        role="status"
       >
-        {
-          (typeof message === 'string') &&
-            <span>{message}</span>
-        }
-        {
-          (typeof message !== 'string') &&
-            message
-        }
+        <div
+          aria-live="polite"
+          className={style.message}
+          role="status"
+        >
+          {
+            (typeof message === 'string') &&
+              <span>{message}</span>
+          }
+          {
+            (typeof message !== 'string') &&
+              message
+          }
+        </div>
       </Col>
     </Row>
     <Row flex>
