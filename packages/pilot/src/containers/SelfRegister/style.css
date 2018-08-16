@@ -1,0 +1,51 @@
+html { /* stylelint-disable-line selector-max-type */
+  background-color: #f7f7f7;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+
+  &:first-child {
+    padding-left: 16px;
+  }
+}
+
+.columnPadding {
+  padding: 10px 10px 0 34px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 0;
+}
+
+.centerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 0;
+}
+
+.fillWidth {
+  width: 100%;
+}
+
+.buttonSubmit {
+  width: 100%;
+
+  & > button {
+    width: 100%;
+  }
+}
+
+.stepsMiddle {
+  padding-bottom: 0;
+  height: 41px;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+}

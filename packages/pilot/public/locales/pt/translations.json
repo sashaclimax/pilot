@@ -559,6 +559,64 @@
       "success": "A transação foi reprocessada com sucesso",
       "title": "Reprocessar transação"
     },
+    "self_register": {
+      "return": "Voltar",
+      "different_passwords_error": "As senhas não conferem",
+      "number_error": "Deve ser um número",
+      "required_error": "Campo obrigatório",
+      "create_account": {
+        "header_title": "Seja bem vindo",
+        "header_body": "Crie sua conta e aceite pagamentos online hoje!",
+        "form_email": "E-mail",
+        "form_password": "Senha",
+        "form_confirm_password": "Confirmar a senha",
+        "form_continue": "Continuar"
+      },
+      "check_cnpj": {
+        "header_title": "Sua empresa tem CNPJ ativo?",
+        "header_body_part_1": "Todas as lojas virtuais precisam apresentar número de CPF ou CNPJ em seu rodapé.",
+        "header_body_part_2": "Isso confere segurança e credibilidade aos seus clientes, além de ser obrigatório de acordo com o Decreto Federal nº 7962/13.",
+        "button_no": "Não",
+        "button_yes": "Sim"
+      },
+      "without_cnpj": {
+        "header_title": "Que pena!",
+        "header_body_part_1": "O CNPJ é obrigatório para usar o Pagar.me hoje.",
+        "header_body_part_2": "Obrigado pelo interesse, estamos nos aprimorando para poder atendê-lo em breve.",
+        "button_go_to_home": "Ir para a página inicial"
+      },
+      "company_data": {
+        "header_title": "Dados da Empresa",
+        "form_trade_name": "Nome fantasia",
+        "form_legal_name": "Razão social",
+        "form_commercial_phone": "Telefone comercial (com DDD)",
+        "form_site": "Site (opcional)",
+        "form_continue": "Continuar"
+      },
+      "partner_data": {
+        "header_title": "Dados do Proprietário",
+        "partnet_name": "Nome",
+        "date_birth": "Data de nascimento",
+        "cpf": "CPF",
+        "monther_name": "Nome da mãe",
+        "phone": "Telefone (com DDD)",
+        "email": "E-mail",
+        "cep": "CEP",
+        "street": "Rua",
+        "number": "Número",
+        "complement": "Complemento (opcional)",
+        "neighborhood": "Bairro",
+        "city": "Cidade",
+        "form_continue": "Continuar"
+      },
+      "type_cnpj": {
+        "header_title": "Sua empresa tem CNPJ ativo?",
+        "header_body_part_1": "Todas as lojas virtuais precisam apresentar número de CPF ou CNPJ em seu rodapé.",
+        "header_body_part_2": "Isso confere segurança e credibilidade aos seus clientes, além de ser obrigatório de acordo com o Decreto Federal nº 7962/13.",
+        "form_cnpj": "CNPJ",
+        "form_continue": "Continuar"
+      }
+    },
     "sidebar": {
       "anticipation": "Antecipar",
       "available": "Disponível",
