@@ -422,17 +422,17 @@ class TransactionDetails extends Component {
     const { totalDisplayLabels } = this.props
 
     return (
-      <span>
-        <div>
-          {totalDisplayLabels.mdr}
-        </div>
-        <div>
-          {totalDisplayLabels.cost}
-        </div>
-        <div>
-          {totalDisplayLabels.refund}
-        </div>
-      </span>
+      <div className={style.subtitle}>
+        <span>
+          {totalDisplayLabels.mdr}&nbsp;
+        </span>
+        <span>
+          {totalDisplayLabels.cost}&nbsp;
+        </span>
+        <span>
+          {totalDisplayLabels.refund}&nbsp;
+        </span>
+      </div>
     )
   }
 
@@ -648,9 +648,11 @@ class TransactionDetails extends Component {
               <CardContent className={style.content}>
                 <TotalDisplay
                   amount={payment.paid_amount}
+                  amountSize="huge"
                   color="#37cc9a"
                   subtitle={totalDisplayLabels.captured_at}
                   title={totalDisplayLabels.paid_amount}
+                  titleSize="medium"
                 />
               </CardContent>
             </Card>
@@ -671,9 +673,11 @@ class TransactionDetails extends Component {
                       payment.mdr_amount,
                     ])
                   }
+                  amountSize="huge"
                   color="#ff796f"
                   subtitle={this.renderOutAmountSubTitle()}
                   title={totalDisplayLabels.out_amount}
+                  titleSize="medium"
                 />
               </CardContent>
             </Card>
@@ -688,9 +692,11 @@ class TransactionDetails extends Component {
               <CardContent className={style.content}>
                 <TotalDisplay
                   amount={payment.net_amount}
+                  amountSize="huge"
                   color="#4ca9d7"
                   subtitle={totalDisplayLabels.receive_date}
                   title={totalDisplayLabels.net_amount}
+                  titleSize="medium"
                 />
               </CardContent>
             </Card>
