@@ -1,0 +1,14 @@
+@import "former-kit-skin-pagarme/dist/styles/colors/light.css";
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.image {
+  display: block;
+  background-color: var(--color-light-coal-50);
+  width: 152px;
+  height: 152px;
+  margin: 20px auto;
+}
