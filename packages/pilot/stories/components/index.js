@@ -27,8 +27,12 @@ import BalanceSummary from './BalanceSummary'
 import SidebarSections from './SidebarSections'
 import SidebarSummary from './SidebarSummary'
 import Loader from './Loader'
+import ConfirmModal from './ConfirmModal'
 
 storiesOf('Components', module)
+  .add('Confirm Modal', () => (
+    <ConfirmModal />
+  ))
   .add('Copy button', () => (
     <CopyButton />
   ))
