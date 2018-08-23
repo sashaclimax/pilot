@@ -58,6 +58,7 @@ import {
 import Anticipation from './Anticipation'
 import ConclusionStepSuccess from './AddRecipient/ConclusionStep/Success'
 import ConclusionStepFail from './AddRecipient/ConclusionStep/Fail'
+import AddRecipient from './AddRecipient'
 
 storiesOf('Containers', module)
   .add('Recipient Conclusion Success', () => (
@@ -77,6 +78,9 @@ storiesOf('Containers', module)
   ))
   .add('Bank Account Step', () => (
     <BankAccountStep />
+  ))
+  .add('Add Recipient', () => (
+    <AddRecipient />
   ))
   .add('Recipient list', () => (
     <RecipientListState />
