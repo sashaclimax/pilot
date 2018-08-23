@@ -59,6 +59,12 @@
       "settings": "Configurações da conta",
       "logout": "Encerrar sessão"
     },
+    "environment": {
+      "test_label": "Ambiente de teste",
+      "text_link": "clique aqui",
+      "text_live": "Você está no ambiente Live. Para ir para o ambiente Test",
+      "text_test": "Você está no ambiente Test. Para ir para o ambiente Live"
+    },
     "title": "Transações",
     "alerts": "Notificações",
     "messages": "Mensagens",

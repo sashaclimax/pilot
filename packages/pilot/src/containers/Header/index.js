@@ -21,8 +21,53 @@ import {
 } from 'former-kit'
 
 import IconFeedback from 'emblematic-icons/svg/Feedback24.svg'
+import IconTestAmbientOff from 'emblematic-icons/svg/TestAmbientOff24.svg'
+import IconTestAmbientOn from 'emblematic-icons/svg/TestAmbientOn24.svg'
+
+import environment, {
+  REACT_APP_LIVE_URL,
+  REACT_APP_TEST_URL,
+} from '../../environment'
 
 import style from './style.css'
+
+const getEnvironmentUrl = () => (
+  environment === 'test'
+    ? REACT_APP_LIVE_URL
+    : REACT_APP_TEST_URL
+)
+
+const renderEnvironmentButton = ({
+  t,
+}) => (
+  <Popover
+    content={
+      <PopoverContent>
+        <small>
+          {t(`header.environment.text_${environment}`)}&nbsp;
+          <a href={getEnvironmentUrl()}>
+            {t('header.environment.text_link')}
+          </a>.
+        </small>
+      </PopoverContent>
+    }
+    placement="bottomEnd"
+  >
+    {environment === 'test' &&
+      <small className={style.testEnvironmentLabel}>
+        {t('header.environment.test_label')}
+      </small>
+    }
+    <Button
+      fill="clean"
+      icon={
+        environment === 'test'
+        ? <IconTestAmbientOn />
+        : <IconTestAmbientOff />
+      }
+    />
+  </Popover>
+)
 
 const HeaderContainer = ({
   onBack,
@@ -58,13 +103,17 @@ const HeaderContainer = ({
     </HashRouter>
 
     <HeaderContent>
+      {renderEnvironmentButton({ t })}
+
+      <Spacing size="small" />
+
       <Popover
         content={
           <PopoverContent>
             <small>
               <strong className={style.feedback}>{t('feedback_text_emphasis')}</strong>
               {t('feedback_text')}&nbsp;
-              <a href="mailto:nova@pagar.me">{t('feedback_text_email')}</a>.
+              <a href={REACT_APP_TEST_URL}>{t('feedback_text_email')}</a>.
             </small>
           </PopoverContent>
         }
@@ -104,6 +153,10 @@ const HeaderContainer = ({
     </HeaderContent>
   </Header>
 )
+
+renderEnvironmentButton.propTypes = {
+  t: PropTypes.func.isRequired,
+}
 
 HeaderContainer.propTypes = {
   onBack: PropTypes.func.isRequired,
