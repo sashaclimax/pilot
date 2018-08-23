@@ -1,0 +1,12 @@
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+}
+
+.actions > button {
+  margin-left: 16px;
+}
