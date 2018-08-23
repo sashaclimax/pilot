@@ -38,9 +38,6 @@
   "enter_password": "Digite sua senha",
   "error": "Erro",
   "export": "Exportar",
-  "feedback_text": "sobre o uso da nossa nova dashboard",
-  "feedback_text_email": "aqui",
-  "feedback_text_emphasis": "Envie seus comentários",
   "filter_action": "Filtrar",
   "go_back": "voltar",
   "holder_name": "Portador do cartão",
@@ -64,6 +61,11 @@
       "text_link": "clique aqui",
       "text_live": "Você está no ambiente Live. Para ir para o ambiente Test",
       "text_test": "Você está no ambiente Test. Para ir para o ambiente Live"
+    },
+    "feedback": {
+      "text": "sobre o uso da nossa nova dashboard",
+      "text_email": "aqui",
+      "text_emphasis": "Envie seus comentários"
     },
     "title": "Transações",
     "alerts": "Notificações",
