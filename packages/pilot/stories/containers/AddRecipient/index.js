@@ -18,7 +18,7 @@ async function fetchAccounts () {
           },
         ],
       })
-    }, 1000)
+    }, 2500)
   })
 }
 

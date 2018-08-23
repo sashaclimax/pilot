@@ -11,6 +11,8 @@ import {
 import BankAccountStep from './BankAccountStep'
 import IdentificationStep from './IdentificationStep'
 import ConfirmModal from '../../components/ConfirmModal'
+import Loader from '../../components/Loader'
+
 import style from './style.css'
 
 const IDENTIFICATION = 'identification'
@@ -93,16 +95,19 @@ export default class AddRecipients extends Component {
         { id: CONCLUSION, status: 'pending' },
       ],
       openModal: false,
+      isLoading: false,
     }
 
     this.steps = createSteps(fetchAccounts, t)
 
     this.closeModal = this.closeModal.bind(this)
     this.handleExit = this.handleExit.bind(this)
+    this.handleFetchError = this.handleFetchError.bind(this)
     this.onBack = this.onBack.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onContinue = this.onContinue.bind(this)
     this.renderStep = this.renderStep.bind(this)
+    this.setStatePromise = this.setStatePromise.bind(this)
     this.updateStatus = this.updateStatus.bind(this)
   }
 
@@ -123,12 +128,15 @@ export default class AddRecipients extends Component {
     ))
 
     let fetchData = this.state.fetch
+
     if (nextStep.fetch) {
-      // TODO: Se um erro acontecer, deve ser mostrado o passo de conclusão
-      // com uma mensagem de erro
-      // TODO: Em quanto os dados são buscados, deve ser exibida uma tela de
-      // loading
-      fetchData = await nextStep.fetch()
+      await this.setStatePromise({ isLoading: true })
+      try {
+        fetchData = await nextStep.fetch()
+      } catch (error) {
+        this.handleFetchError(error)
+        return
+      }
     }
 
     const status = this.updateStatus(nextStepOrder)
@@ -141,13 +149,20 @@ export default class AddRecipients extends Component {
         [currentStep.id]: stepData,
       },
       fetch: fetchData,
+      isLoading: false,
     })
   }
 
+  /* eslint-disable */
+  handleFetchError (error) {
+    // TODO: Se um erro acontecer, deve ser mostrado o passo de conclusão
+    // com uma mensagem de erro
+    console.error('Erro!')
+  }
+  /* eslint-enable */
+
   onCancel () {
-    this.setState({
-      openModal: true,
-    })
+    this.setState({ openModal: true })
   }
 
   /* eslint-disable */
@@ -174,9 +189,7 @@ export default class AddRecipients extends Component {
   }
 
   closeModal () {
-    this.setState({
-      openModal: false,
-    })
+    this.setState({ openModal: false })
   }
 
   updateStatus (nextStepOrder) {
@@ -195,6 +208,12 @@ export default class AddRecipients extends Component {
         id: step.id,
         status,
       }
+    })
+  }
+
+  setStatePromise (state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve)
     })
   }
 
@@ -242,6 +261,12 @@ export default class AddRecipients extends Component {
   }
 
   render () {
+    const { isLoading } = this.state
+
+    const Step = (isLoading)
+      ? <Loader visible />
+      : this.renderStep()
+
     return (
       <Fragment>
         <Card>
@@ -251,7 +276,7 @@ export default class AddRecipients extends Component {
           />
         </Card>
         <Card className={style.marginTop}>
-          {this.renderStep()}
+          { Step }
         </Card>
         <ConfirmModal
           isOpen={this.state.openModal}
