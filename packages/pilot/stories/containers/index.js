@@ -58,8 +58,12 @@ import {
 import Anticipation from './Anticipation'
 import ConclusionStepSuccess from './AddRecipient/ConclusionStep/Success'
 import ConclusionStepFail from './AddRecipient/ConclusionStep/Fail'
+import ReceiverConfigExample from './ReceiverConfig'
 
 storiesOf('Containers', module)
+  .add('Receiver Configuration', () => (
+    <ReceiverConfigExample />
+  ))
   .add('Recipient Conclusion Success', () => (
     <ConclusionStepSuccess />
   ))
