@@ -1,15 +1,15 @@
-
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  Button,
   Card,
   Steps,
 } from 'former-kit'
 
 import BankAccountStep from './BankAccountStep'
 import IdentificationStep from './IdentificationStep'
+import StepMock from './StepMock' // TODO: remova-me
+
 import ConfirmModal from '../../components/ConfirmModal'
 import Loader from '../../components/Loader'
 
@@ -49,30 +49,6 @@ const createSteps = (fetchAccounts, t) => [
     title: t('Conclusão'),
   },
 ]
-
-const StepMock = ({
-  onBack,
-  onCancel,
-  onContinue,
-}) => (
-  <Fragment>
-    <Button onClick={onBack}>Back</Button>
-    <Button onClick={onCancel}>Cancel</Button>
-    <Button onClick={onContinue}>Continue</Button>
-  </Fragment>
-)
-
-StepMock.propTypes = {
-  onContinue: PropTypes.func,
-  onBack: PropTypes.func,
-  onCancel: PropTypes.func,
-}
-
-StepMock.defaultProps = {
-  onContinue: () => {},
-  onBack: () => {},
-  onCancel: () => {},
-}
 
 export default class AddRecipients extends Component {
   constructor (props) {
