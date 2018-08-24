@@ -27,31 +27,34 @@ const CONCLUSION = 'ConclusionStep'
 const createSteps = (fetchAccounts, t) => [
   {
     id: IDENTIFICATION,
-    order: 1,
     title: t('Dados'),
   },
   {
     fetch: fetchAccounts,
     id: BANK_ACCOUNT,
-    order: 2,
     title: t('Conta Bancaria'),
   },
   {
     id: CONFIGURATION,
-    order: 3,
     title: t('Configurações'),
   },
   {
     id: CONFIRMATION,
-    order: 4,
     title: t('Confirmação'),
   },
   {
     // TODO: O passo de conclusão precisa fazer um POST
     id: CONCLUSION,
-    order: 5,
     title: t('Conclusão'),
   },
+]
+
+const initialStatus = [
+  { id: IDENTIFICATION, status: 'current' },
+  { id: BANK_ACCOUNT, status: 'pending' },
+  { id: CONFIGURATION, status: 'pending' },
+  { id: CONFIRMATION, status: 'pending' },
+  { id: CONCLUSION, status: 'pending' },
 ]
 
 export default class AddRecipients extends Component {
@@ -59,20 +62,16 @@ export default class AddRecipients extends Component {
     super(props)
 
     const {
-      currentStepOrder,
       fetchAccounts,
       t,
     } = props
 
     this.state = {
-      currentStepOrder,
+      currentStepNumber: 0,
       data: {},
+      fetchData: {},
       status: [
-        { id: IDENTIFICATION, status: 'current' },
-        { id: BANK_ACCOUNT, status: 'pending' },
-        { id: CONFIGURATION, status: 'pending' },
-        { id: CONFIRMATION, status: 'pending' },
-        { id: CONCLUSION, status: 'pending' },
+        ...initialStatus,
       ],
       openModal: false,
       isLoading: false,
@@ -92,21 +91,15 @@ export default class AddRecipients extends Component {
 
   async onContinue (stepData) {
     const {
-      currentStepOrder,
+      currentStepNumber,
       data,
     } = this.state
 
-    const currentStep = this.steps.find(step => (
-      step.order === currentStepOrder
-    ))
+    const currentStep = this.steps[currentStepNumber]
+    const nextStepNumber = currentStepNumber + 1
+    const nextStep = this.steps[currentStepNumber + 1]
 
-    const nextStepOrder = currentStepOrder + 1
-
-    const nextStep = this.steps.find(step => (
-      step.order === nextStepOrder
-    ))
-
-    let fetchData = this.state.fetch
+    let { fetchData } = this.state
 
     if (nextStep.fetch) {
       await this.setStatePromise({ isLoading: true })
@@ -118,16 +111,16 @@ export default class AddRecipients extends Component {
       }
     }
 
-    const status = this.updateStatus(nextStepOrder)
+    const status = this.updateStatus(nextStepNumber)
 
     this.setState({
       status,
-      currentStepOrder: nextStepOrder,
+      currentStepNumber: nextStepNumber,
       data: {
         ...data,
         [currentStep.id]: stepData,
       },
-      fetch: fetchData,
+      fetchData,
       isLoading: false,
     })
   }
@@ -146,15 +139,15 @@ export default class AddRecipients extends Component {
 
   onBack () {
     const {
-      currentStepOrder,
+      currentStepNumber,
     } = this.state
 
-    const previousStepOrder = currentStepOrder - 1
-    const status = this.updateStatus(previousStepOrder)
+    const previousStepNumber = currentStepNumber - 1
+    const status = this.updateStatus(previousStepNumber)
 
     this.setState({
       status,
-      currentStepOrder: previousStepOrder,
+      currentStepNumber: previousStepNumber,
     })
   }
 
@@ -162,15 +155,15 @@ export default class AddRecipients extends Component {
     this.setState({ openModal: false })
   }
 
-  updateStatus (nextStepOrder) {
-    return this.steps.map((step) => {
+  updateStatus (nextStepNumber) {
+    return this.steps.map((step, index) => {
       let status = 'current'
 
-      if (step.order < nextStepOrder) {
+      if (index < nextStepNumber) {
         status = 'success'
       }
 
-      if (step.order > nextStepOrder) {
+      if (index > nextStepNumber) {
         status = 'pending'
       }
 
@@ -189,18 +182,20 @@ export default class AddRecipients extends Component {
 
   renderStep () {
     const {
-      currentStepOrder,
-      fetch,
+      currentStepNumber,
       data,
+      fetchData,
     } = this.state
 
-    const { t } = this.props
+    const {
+      onExit,
+      onViewDetails,
+      t,
+    } = this.props
 
-    const currentStep = this.steps.find(step => (
-      step.order === currentStepOrder
-    ))
+    const currentStep = this.steps[currentStepNumber]
 
-    const props = {
+    const stepProps = {
       data: data[currentStep.id],
       onBack: this.onBack,
       onCancel: this.onCancel,
@@ -211,37 +206,49 @@ export default class AddRecipients extends Component {
     // TODO: Opcional, renderizar utilizando nomes de tags dinâmicos
     switch (currentStep.id) {
       case IDENTIFICATION:
-        return <IdentificationStep {...props} />
+        return <IdentificationStep {...stepProps} />
 
       case BANK_ACCOUNT:
-        return <BankAccountStep {...props} {...fetch} />
+        return <BankAccountStep {...stepProps} {...fetchData} />
 
       case CONFIGURATION:
-        return <StepMock {...props} />
+        return <StepMock {...stepProps} />
 
       case CONFIRMATION:
-        return <StepMock {...props} />
+        return <StepMock {...stepProps} />
 
       case CONCLUSION:
         // TODO: passar as props corretas
+        // ideia: a tela de sucesso e sempre o ultimo passo, mas se a chamada
+        // onContinue do passo anterior der erro, o handleFetchError atualiza o
+        // estado de tal forma que a tela de erro que vai ser renderizada.
         return (
           <ConclusionStep
             status="success"
-            onExit={() => {}}
+            onExit={onExit}
             onTryAgain={() => {}}
-            onViewDetails={() => {}}
+            // TODO: Passar o ID do recebedor criado
+            onViewDetails={onViewDetails}
             t={t}
           />
         )
 
       default:
-        return <StepMock {...props} />
+        return <StepMock {...stepProps} />
     }
   }
 
   render () {
-    const { isLoading, openModal, status } = this.state
-    const { exitForm, t } = this.props
+    const {
+      isLoading,
+      openModal,
+      status,
+    } = this.state
+
+    const {
+      onExit,
+      t,
+    } = this.props
 
     const Step = (isLoading)
       ? <Loader visible />
@@ -261,7 +268,7 @@ export default class AddRecipients extends Component {
         <ConfirmModal
           isOpen={openModal}
           onCancel={this.closeModal}
-          onConfirm={exitForm}
+          onConfirm={onExit}
           title={t('exit_modal_title')}
           cancelText={t('cancel')}
           confirmText={t('confirm')}
@@ -276,12 +283,8 @@ export default class AddRecipients extends Component {
 }
 
 AddRecipients.propTypes = {
-  currentStepOrder: PropTypes.number,
   fetchAccounts: PropTypes.func.isRequired,
-  exitForm: PropTypes.func.isRequired,
+  onExit: PropTypes.func.isRequired,
+  onViewDetails: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
-}
-
-AddRecipients.defaultProps = {
-  currentStepOrder: 1,
 }

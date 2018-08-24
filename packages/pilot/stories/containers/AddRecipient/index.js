@@ -27,7 +27,8 @@ const AddRecipientExample = () => (
   <Section>
     <AddRecipient
       fetchAccounts={fetchAccounts}
-      exitForm={action('Exit Form')}
+      onExit={action('To Recipients Page')}
+      onViewDetails={action('To Recipient Details Page')}
       t={t => t}
     />
   </Section>
