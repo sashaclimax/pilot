@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types'
 import {
   CardSection,
   CardSectionDoubleLineTitle,
   CardContent,
-  Grid,
-  Row,
-  Col,
 } from 'former-kit'
-import IconLock from 'emblematic-icons/svg/Lock32.svg'
+import AnticipationIcon from 'emblematic-icons/svg/Anticipation32.svg'
+
+import AnticipationCard from './AnticipationCard'
 
 class ReceiverConfig extends Component {
   constructor (props) {
@@ -16,7 +16,6 @@ class ReceiverConfig extends Component {
     this.state = { cardCollapsed: true }
 
     this.handleCollapse = this.handleCollapse.bind(this)
-    this.renderInfo = this.renderInfo.bind(this)
   }
 
   handleCollapse () {
@@ -25,43 +24,33 @@ class ReceiverConfig extends Component {
     })
   }
 
-  renderInfo () {
-    const conteudo = 'Teste'
-
-    if (this.state.cardCollapsed) {
-      return (
-        <Grid>
-          <Row>
-            <Col>
-              {conteudo}
-            </Col>
-          </Row>
-        </Grid>
-      )
-    }
-    return null
-  }
-
   render () {
+    const { t } = this.props
     return (
       <Fragment>
         <CardContent>
           <CardSection>
             <CardSectionDoubleLineTitle
               collapsed={this.state.cardCollapsed}
-              subtitle="Modelo de antecipação: Automático por volume"
+              subtitle={`${t('anticipation_model')}: ${'Automática por volume'} | ${t('anticipation_volume')}: ${'100%'}`}
               title="Antecipação"
-              icon={<IconLock height={16} width={16} />}
-              onClick={this.renderInfo}
+              icon={<AnticipationIcon height={16} width={16} />}
+              onClick={this.handleCollapse}
             />
             <CardContent>
-              {this.renderInfo}
+              {!this.state.cardCollapsed &&
+                <AnticipationCard />
+              }
             </CardContent>
           </CardSection>
         </CardContent>
       </Fragment>
     )
   }
+}
+
+ReceiverConfig.propTypes = {
+  t: PropTypes.func.isRequired,
 }
 
 export default ReceiverConfig
