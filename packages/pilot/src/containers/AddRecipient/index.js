@@ -101,7 +101,6 @@ export default class AddRecipients extends Component {
     this.steps = createSteps(fetchAccounts, t)
 
     this.closeModal = this.closeModal.bind(this)
-    this.handleExit = this.handleExit.bind(this)
     this.handleFetchError = this.handleFetchError.bind(this)
     this.onBack = this.onBack.bind(this)
     this.onCancel = this.onCancel.bind(this)
@@ -164,15 +163,6 @@ export default class AddRecipients extends Component {
   onCancel () {
     this.setState({ openModal: true })
   }
-
-  /* eslint-disable */
-  handleExit () {
-    // TODO: Receber por props o método para ser chamado quando o usuário
-    // quiser sair do fluxo. Esse método vai retorná-lo para a tela inicial
-    // de recebedores.
-    console.log("exit")
-  }
-  /* eslint-enable */
 
   onBack () {
     const {
@@ -298,6 +288,7 @@ export default class AddRecipients extends Component {
 AddRecipients.propTypes = {
   currentStepOrder: PropTypes.number,
   fetchAccounts: PropTypes.func.isRequired,
+  exitForm: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 }
 

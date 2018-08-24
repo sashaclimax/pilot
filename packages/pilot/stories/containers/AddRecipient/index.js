@@ -1,4 +1,5 @@
 import React from 'react'
+import { action } from '@storybook/addon-actions'
 
 import Section from '../../Section'
 import AddRecipient from '../../../src/containers/AddRecipient'
@@ -26,6 +27,7 @@ const AddRecipientExample = () => (
   <Section>
     <AddRecipient
       fetchAccounts={fetchAccounts}
+      exitForm={action('Exit Form')}
       t={t => t}
     />
   </Section>
