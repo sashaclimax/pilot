@@ -6,8 +6,11 @@ import {
   Steps,
 } from 'former-kit'
 
-import BankAccountStep from './BankAccountStep'
 import IdentificationStep from './IdentificationStep'
+import BankAccountStep from './BankAccountStep'
+// import ConfigurationStep from  './ConfigurationStep'
+// import ConfirmStep from  './ConfirmStep'
+import ConclusionStep from './ConclusionStep'
 import StepMock from './StepMock' // TODO: remova-me
 
 import ConfirmModal from '../../components/ConfirmModal'
@@ -15,11 +18,11 @@ import Loader from '../../components/Loader'
 
 import style from './style.css'
 
-const IDENTIFICATION = 'identification'
-const BANK_ACCOUNT = 'bankAccount'
-const CONFIGURATION = 'configuration'
-const CONFIRMATION = 'confirmation'
-const CONCLUSION = 'conclusion'
+const IDENTIFICATION = 'IdentificationStep'
+const BANK_ACCOUNT = 'BankAccountStep'
+const CONFIGURATION = 'ConfigurationStep'
+const CONFIRMATION = 'ConfirmStep'
+const CONCLUSION = 'ConclusionStep'
 
 const createSteps = (fetchAccounts, t) => [
   {
@@ -44,6 +47,7 @@ const createSteps = (fetchAccounts, t) => [
     title: t('Confirmação'),
   },
   {
+    // TODO: O passo de conclusão precisa fazer um POST
     id: CONCLUSION,
     order: 5,
     title: t('Conclusão'),
@@ -184,50 +188,60 @@ export default class AddRecipients extends Component {
   }
 
   renderStep () {
-    const { currentStepOrder } = this.state
+    const {
+      currentStepOrder,
+      fetch,
+      data,
+    } = this.state
+
     const { t } = this.props
 
     const currentStep = this.steps.find(step => (
       step.order === currentStepOrder
     ))
 
+    const props = {
+      data: data[currentStep.id],
+      onBack: this.onBack,
+      onCancel: this.onCancel,
+      onContinue: this.onContinue,
+      t,
+    }
+
     // TODO: Opcional, renderizar utilizando nomes de tags dinâmicos
     switch (currentStep.id) {
       case IDENTIFICATION:
-        return (
-          <IdentificationStep
-            data={this.state.data[currentStep.id]}
-            onBack={this.onBack}
-            onCancel={this.onCancel}
-            onContinue={this.onContinue}
-            t={t}
-          />
-        )
+        return <IdentificationStep {...props} />
 
       case BANK_ACCOUNT:
+        return <BankAccountStep {...props} {...fetch} />
+
+      case CONFIGURATION:
+        return <StepMock {...props} />
+
+      case CONFIRMATION:
+        return <StepMock {...props} />
+
+      case CONCLUSION:
+        // TODO: passar as props corretas
         return (
-          <BankAccountStep
-            {...this.state.fetch}
-            onBack={this.onBack}
-            onCancel={this.onCancel}
-            onContinue={this.onContinue}
+          <ConclusionStep
+            status="success"
+            onExit={() => {}}
+            onTryAgain={() => {}}
+            onViewDetails={() => {}}
             t={t}
           />
         )
 
       default:
-        return (
-          <StepMock
-            onBack={this.onBack}
-            onCancel={this.onCancel}
-            onContinue={this.onContinue}
-          />
-        )
+        return <StepMock {...props} />
     }
   }
 
   render () {
-    const { isLoading } = this.state
+    const { isLoading, openModal, status } = this.state
+    const { exitForm, t } = this.props
 
     const Step = (isLoading)
       ? <Loader visible />
@@ -237,7 +251,7 @@ export default class AddRecipients extends Component {
       <Fragment>
         <Card>
           <Steps
-            status={this.state.status}
+            status={status}
             steps={this.steps}
           />
         </Card>
@@ -245,15 +259,15 @@ export default class AddRecipients extends Component {
           { Step }
         </Card>
         <ConfirmModal
-          isOpen={this.state.openModal}
+          isOpen={openModal}
           onCancel={this.closeModal}
-          onConfirm={this.handleExit}
-          title="Titulo"
-          cancelText="Cancelar"
-          confirmText="Confirmar"
+          onConfirm={exitForm}
+          title={t('exit_modal_title')}
+          cancelText={t('cancel')}
+          confirmText={t('confirm')}
         >
           <p style={{ textAlign: 'center' }}>
-            Tem certeza?
+            {t('exit_modal_message')}
           </p>
         </ConfirmModal>
       </Fragment>
