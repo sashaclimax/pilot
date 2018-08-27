@@ -1,26 +1,26 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import {
-  CardSection,
-  CardSectionDoubleLineTitle,
-  CardContent,
-} from 'former-kit'
+// import {
+//   CardSection,
+//   CardSectionDoubleLineTitle,
+//   CardContent,
+// } from 'former-kit'
 import AnticipationIcon from 'emblematic-icons/svg/Anticipation32.svg'
-
-import AnticipationCard from './AnticipationCard'
+import ReceiverItem from './ReceiverItem'
 
 class ReceiverConfig extends Component {
   constructor (props) {
     super(props)
 
-    this.state = { cardCollapsed: true }
+    this.state = { expanded: false }
 
     this.handleCollapse = this.handleCollapse.bind(this)
   }
 
   handleCollapse () {
+    console.log(this.state.expanded)
     this.setState({
-      cardCollapsed: !this.state.cardCollapsed,
+      expanded: !this.state.expanded,
     })
   }
 
@@ -28,22 +28,33 @@ class ReceiverConfig extends Component {
     const { t } = this.props
     return (
       <Fragment>
-        <CardContent>
-          <CardSection>
-            <CardSectionDoubleLineTitle
-              collapsed={this.state.cardCollapsed}
-              subtitle={`${t('anticipation_model')}: ${'Automática por volume'} | ${t('anticipation_volume')}: ${'100%'}`}
-              title="Antecipação"
-              icon={<AnticipationIcon height={16} width={16} />}
-              onClick={this.handleCollapse}
-            />
-            <CardContent>
-              {!this.state.cardCollapsed &&
-                <AnticipationCard />
-              }
-            </CardContent>
-          </CardSection>
-        </CardContent>
+        <ReceiverItem
+          title={t('Antecipação')}
+          subtitle={t('Subtítulo de Antecipação')}
+          icon={<AnticipationIcon width={16} height={16} />}
+          collapsed={this.state.expanded}
+          onClick={this.handleCollapse}
+        >
+          <span>Conteúdo de Antecipação</span>
+        </ReceiverItem>
+        <ReceiverItem
+          title={t('Transferência')}
+          subtitle={t('Subtítulo de Transferência')}
+          icon={<AnticipationIcon width={16} height={16} />}
+          collapsed={this.state.expanded}
+          onClick={this.handleCollapse}
+        >
+          <span>Conteúdo de Transferência</span>
+        </ReceiverItem>
+        <ReceiverItem
+          title={t('Conta Bancária')}
+          subtitle={t('Subtítulo de Conta Bancária')}
+          icon={<AnticipationIcon width={16} height={16} />}
+          collapsed={this.state.expanded}
+          onClick={this.handleCollapse}
+        >
+          <span>Conteúdo de Conta Bancária</span>
+        </ReceiverItem>
       </Fragment>
     )
   }
