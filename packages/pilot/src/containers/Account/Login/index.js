@@ -18,10 +18,6 @@ const LoginContainer = ({
   t,
 }) => (
   <Form
-    data={{
-      email: '',
-      password: '',
-    }}
     errors={errors}
     customErrorProp="error"
     onSubmit={onLogin}
