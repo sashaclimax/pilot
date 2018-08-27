@@ -13,7 +13,6 @@ import BankAccountStep from './BankAccountStep'
 import StepMock from './StepMock' // TODO: remova-me
 import ConclusionStep from './ConclusionStep'
 import ErrorStep from './ErrorStep'
-
 import ConfirmModal from '../../components/ConfirmModal'
 import Loader from '../../components/Loader'
 
@@ -62,20 +61,16 @@ export default class AddRecipients extends Component {
   constructor (props) {
     super(props)
 
-    const {
-      fetchAccounts,
-      t,
-    } = props
+    const { fetchAccounts, t } = props
 
     this.state = {
       currentStepNumber: 0,
       data: {},
+      error: false,
       fetchData: {},
-      status: [
-        ...initialStatus,
-      ],
-      openModal: false,
       isLoading: false,
+      openModal: false,
+      status: [...initialStatus],
     }
 
     this.steps = createSteps(fetchAccounts, t)
@@ -84,6 +79,7 @@ export default class AddRecipients extends Component {
     this.onBack = this.onBack.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onContinue = this.onContinue.bind(this)
+    this.onTryAgain = this.onTryAgain.bind(this)
     this.renderError = this.renderError.bind(this)
     this.renderStep = this.renderStep.bind(this)
     this.setStatePromise = this.setStatePromise.bind(this)
@@ -91,11 +87,7 @@ export default class AddRecipients extends Component {
   }
 
   async onContinue (stepData) {
-    const {
-      currentStepNumber,
-      data,
-    } = this.state
-
+    const { currentStepNumber, data } = this.state
     const currentStep = this.steps[currentStepNumber]
     const nextStepNumber = currentStepNumber + 1
     const nextStep = this.steps[nextStepNumber]
@@ -115,15 +107,15 @@ export default class AddRecipients extends Component {
     const status = this.updateStatus(nextStepNumber)
 
     this.setState({
-      status,
       currentStepNumber: nextStepNumber,
       data: {
         ...data,
         [currentStep.id]: stepData,
       },
+      error,
       fetchData,
       isLoading: false,
-      error,
+      status,
     })
   }
 
@@ -132,16 +124,23 @@ export default class AddRecipients extends Component {
   }
 
   onBack () {
-    const {
-      currentStepNumber,
-    } = this.state
-
+    const { currentStepNumber } = this.state
     const previousStepNumber = currentStepNumber - 1
     const status = this.updateStatus(previousStepNumber)
 
     this.setState({
       status,
       currentStepNumber: previousStepNumber,
+    })
+  }
+
+  onTryAgain () {
+    this.setState({
+      currentStepNumber: 0,
+      data: {},
+      error: false,
+      fetchData: {},
+      status: [...initialStatus],
     })
   }
 
@@ -211,14 +210,11 @@ export default class AddRecipients extends Component {
         return <StepMock {...stepProps} />
 
       case CONCLUSION:
+        // TODO: Passar o id do recebedor criado
         return (
           <ConclusionStep
             onExit={onExit}
-            onViewDetails={() => {
-              // TODO: Passar o id do recebedor criado
-              const recipientId = 0
-              onViewDetails(recipientId)
-            }}
+            onViewDetails={onViewDetails}
             t={t}
           />
         )
@@ -229,18 +225,10 @@ export default class AddRecipients extends Component {
   }
 
   renderError () {
-    const {
-      onExit,
-      t,
-    } = this.props
-
+    // TODO: Passar o "error" do state para o componente?
+    const { onExit, t } = this.props
     return (
-      <ErrorStep
-        onExit={onExit}
-        // TODO: Função que volta o estado para o 1o passo
-        onTryAgain={() => {}}
-        t={t}
-      />
+      <ErrorStep onExit={onExit} onTryAgain={this.onTryAgain} t={t} />
     )
   }
 
