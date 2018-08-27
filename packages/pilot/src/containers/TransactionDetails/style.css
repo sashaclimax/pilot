@@ -12,7 +12,6 @@
 
 .content {
   height: 100%;
-  padding: var(--spacing-small);
 }
 
 .children {
@@ -23,5 +22,4 @@
   color: var(--color-light-steel-100);
   font-size: 11px;
   text-align: center;
-  padding: var(--spacing-tiny) 0;
 }

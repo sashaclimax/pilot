@@ -36,8 +36,9 @@ import {
   CardTitle,
   Col,
   Grid,
-  Row,
   Legend,
+  Row,
+  Spacing,
 } from 'former-kit'
 import IconInfo from 'emblematic-icons/svg/Info32.svg'
 import IconCheck from 'emblematic-icons/svg/Check24.svg'
@@ -420,17 +421,20 @@ class TransactionDetails extends Component {
 
   renderOutAmountSubTitle () {
     const { totalDisplayLabels } = this.props
+    const spacingBar = ' | '
 
     return (
       <div className={style.subtitle}>
         <span>
-          {totalDisplayLabels.mdr}&nbsp;
+          {totalDisplayLabels.mdr}
+          {spacingBar}
         </span>
         <span>
-          {totalDisplayLabels.cost}&nbsp;
+          {totalDisplayLabels.cost}
+          {spacingBar}
         </span>
         <span>
-          {totalDisplayLabels.refund}&nbsp;
+          {totalDisplayLabels.refund}
         </span>
       </div>
     )
@@ -646,6 +650,7 @@ class TransactionDetails extends Component {
           >
             <Card>
               <CardContent className={style.content}>
+                <Spacing size="tiny" />
                 <TotalDisplay
                   amount={payment.paid_amount}
                   amountSize="huge"
@@ -665,6 +670,7 @@ class TransactionDetails extends Component {
           >
             <Card>
               <CardContent className={style.content}>
+                <Spacing size="tiny" />
                 <TotalDisplay
                   amount={
                     getOutAmount([
@@ -690,6 +696,7 @@ class TransactionDetails extends Component {
           >
             <Card>
               <CardContent className={style.content}>
+                <Spacing size="tiny" />
                 <TotalDisplay
                   amount={payment.net_amount}
                   amountSize="huge"
