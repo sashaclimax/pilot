@@ -2,7 +2,7 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 
 import Section from '../../../Section'
-import ConclusionStep from '../../../../src/containers/AddRecipient/ConclusionStep'
+import ConclusionStep from '../../../../src/containers/AddRecipient/ErrorStep'
 
 const ConclusionStepExample = () => (
   <Section>

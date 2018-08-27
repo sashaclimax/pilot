@@ -10,8 +10,9 @@ import IdentificationStep from './IdentificationStep'
 import BankAccountStep from './BankAccountStep'
 // import ConfigurationStep from  './ConfigurationStep'
 // import ConfirmStep from  './ConfirmStep'
-import ConclusionStep from './ConclusionStep'
 import StepMock from './StepMock' // TODO: remova-me
+import ConclusionStep from './ConclusionStep'
+import ErrorStep from './ErrorStep'
 
 import ConfirmModal from '../../components/ConfirmModal'
 import Loader from '../../components/Loader'
@@ -80,10 +81,10 @@ export default class AddRecipients extends Component {
     this.steps = createSteps(fetchAccounts, t)
 
     this.closeModal = this.closeModal.bind(this)
-    this.handleFetchError = this.handleFetchError.bind(this)
     this.onBack = this.onBack.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onContinue = this.onContinue.bind(this)
+    this.renderError = this.renderError.bind(this)
     this.renderStep = this.renderStep.bind(this)
     this.setStatePromise = this.setStatePromise.bind(this)
     this.updateStatus = this.updateStatus.bind(this)
@@ -97,17 +98,17 @@ export default class AddRecipients extends Component {
 
     const currentStep = this.steps[currentStepNumber]
     const nextStepNumber = currentStepNumber + 1
-    const nextStep = this.steps[currentStepNumber + 1]
+    const nextStep = this.steps[nextStepNumber]
 
     let { fetchData } = this.state
+    let error = false
 
     if (nextStep.fetch) {
       await this.setStatePromise({ isLoading: true })
       try {
         fetchData = await nextStep.fetch()
-      } catch (error) {
-        this.handleFetchError(error)
-        return
+      } catch (fetchError) {
+        error = fetchError
       }
     }
 
@@ -122,16 +123,9 @@ export default class AddRecipients extends Component {
       },
       fetchData,
       isLoading: false,
+      error,
     })
   }
-
-  /* eslint-disable */
-  handleFetchError (error) {
-    // TODO: Se um erro acontecer, deve ser mostrado o passo de conclusão
-    // com uma mensagem de erro
-    console.error('Erro!')
-  }
-  /* eslint-enable */
 
   onCancel () {
     this.setState({ openModal: true })
@@ -151,8 +145,10 @@ export default class AddRecipients extends Component {
     })
   }
 
-  closeModal () {
-    this.setState({ openModal: false })
+  setStatePromise (state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve)
+    })
   }
 
   updateStatus (nextStepNumber) {
@@ -174,10 +170,8 @@ export default class AddRecipients extends Component {
     })
   }
 
-  setStatePromise (state) {
-    return new Promise((resolve) => {
-      this.setState(state, resolve)
-    })
+  closeModal () {
+    this.setState({ openModal: false })
   }
 
   renderStep () {
@@ -203,7 +197,6 @@ export default class AddRecipients extends Component {
       t,
     }
 
-    // TODO: Opcional, renderizar utilizando nomes de tags dinâmicos
     switch (currentStep.id) {
       case IDENTIFICATION:
         return <IdentificationStep {...stepProps} />
@@ -211,48 +204,55 @@ export default class AddRecipients extends Component {
       case BANK_ACCOUNT:
         return <BankAccountStep {...stepProps} {...fetchData} />
 
-      case CONFIGURATION:
+      case CONFIGURATION: // TODO: Passo de configuração
         return <StepMock {...stepProps} />
 
-      case CONFIRMATION:
+      case CONFIRMATION: // TODO: Passo de confirmação
         return <StepMock {...stepProps} />
 
       case CONCLUSION:
-        // TODO: passar as props corretas
-        // ideia: a tela de sucesso e sempre o ultimo passo, mas se a chamada
-        // onContinue do passo anterior der erro, o handleFetchError atualiza o
-        // estado de tal forma que a tela de erro que vai ser renderizada.
         return (
           <ConclusionStep
-            status="success"
             onExit={onExit}
-            onTryAgain={() => {}}
-            // TODO: Passar o ID do recebedor criado
-            onViewDetails={onViewDetails}
+            onViewDetails={() => {
+              // TODO: Passar o id do recebedor criado
+              const recipientId = 0
+              onViewDetails(recipientId)
+            }}
             t={t}
           />
         )
 
       default:
-        return <StepMock {...stepProps} />
+        return null
     }
   }
 
-  render () {
-    const {
-      isLoading,
-      openModal,
-      status,
-    } = this.state
-
+  renderError () {
     const {
       onExit,
       t,
     } = this.props
 
-    const Step = (isLoading)
-      ? <Loader visible />
-      : this.renderStep()
+    return (
+      <ErrorStep
+        onExit={onExit}
+        // TODO: Função que volta o estado para o 1o passo
+        onTryAgain={() => {}}
+        t={t}
+      />
+    )
+  }
+
+  render () {
+    const {
+      error,
+      isLoading,
+      openModal,
+      status,
+    } = this.state
+
+    const { onExit, t } = this.props
 
     return (
       <Fragment>
@@ -263,7 +263,12 @@ export default class AddRecipients extends Component {
           />
         </Card>
         <Card className={style.marginTop}>
-          { Step }
+          <Loader visible={isLoading} />
+          {
+            (error)
+              ? this.renderError()
+              : this.renderStep()
+          }
         </Card>
         <ConfirmModal
           isOpen={openModal}
