@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 //   CardContent,
 // } from 'former-kit'
 import AnticipationIcon from 'emblematic-icons/svg/Anticipation32.svg'
+import BankAccountContent from './BankAccountContent'
 import ReceiverItem from './ReceiverItem'
 
 class ReceiverConfig extends Component {
@@ -62,7 +63,9 @@ class ReceiverConfig extends Component {
           onClick={this.handleCollapse}
           id="bankAccount"
         >
-          <span>Conteúdo de Conta Bancária</span>
+          <BankAccountContent
+            t={t}
+          />
         </ReceiverItem>
       </Fragment>
     )

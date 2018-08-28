@@ -6,9 +6,6 @@ import {
   CardContent,
 } from 'former-kit'
 
-// por padrao props sempre tem uma chave children
-// que são os filhos que eu vou passar para ele
-
 const ReceiverItem = ({
   title,
   subtitle,
