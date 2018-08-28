@@ -16,6 +16,7 @@ const ReceiverItem = ({
   collapsed,
   onClick,
   children,
+  id,
 }) => (
   <Fragment>
     <CardContent>
@@ -25,7 +26,7 @@ const ReceiverItem = ({
           subtitle={subtitle}
           collapsed={!collapsed}
           icon={icon}
-          onClick={onClick}
+          onClick={() => onClick(id)}
         />
         <CardContent>
           {collapsed &&
@@ -44,6 +45,7 @@ ReceiverItem.propTypes = {
   children: PropTypes.node.isRequired,
   collapsed: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 }
 
 ReceiverItem.defaultProps = {

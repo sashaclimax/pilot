@@ -12,15 +12,22 @@ class ReceiverConfig extends Component {
   constructor (props) {
     super(props)
 
-    this.state = { expanded: false }
+    this.state = {
+      expanded: {
+        anticipation: false,
+        transfer: false,
+        bankAccount: false,
+      },
+    }
 
     this.handleCollapse = this.handleCollapse.bind(this)
   }
 
-  handleCollapse () {
-    console.log(this.state.expanded)
+  handleCollapse (id) {
     this.setState({
-      expanded: !this.state.expanded,
+      expanded: {
+        [id]: !this.state.expanded[id],
+      },
     })
   }
 
@@ -32,8 +39,8 @@ class ReceiverConfig extends Component {
           title={t('Antecipação')}
           subtitle={t('Subtítulo de Antecipação')}
           icon={<AnticipationIcon width={16} height={16} />}
-          collapsed={this.state.expanded}
-          onClick={this.handleCollapse}
+          collapsed={this.state.expanded.anticipation}
+          onClick={() => this.handleCollapse('anticipation')}
         >
           <span>Conteúdo de Antecipação</span>
         </ReceiverItem>
@@ -41,8 +48,9 @@ class ReceiverConfig extends Component {
           title={t('Transferência')}
           subtitle={t('Subtítulo de Transferência')}
           icon={<AnticipationIcon width={16} height={16} />}
-          collapsed={this.state.expanded}
+          collapsed={this.state.expanded.transfer}
           onClick={this.handleCollapse}
+          id="transfer"
         >
           <span>Conteúdo de Transferência</span>
         </ReceiverItem>
@@ -50,8 +58,9 @@ class ReceiverConfig extends Component {
           title={t('Conta Bancária')}
           subtitle={t('Subtítulo de Conta Bancária')}
           icon={<AnticipationIcon width={16} height={16} />}
-          collapsed={this.state.expanded}
+          collapsed={this.state.expanded.bankAccount}
           onClick={this.handleCollapse}
+          id="bankAccount"
         >
           <span>Conteúdo de Conta Bancária</span>
         </ReceiverItem>
